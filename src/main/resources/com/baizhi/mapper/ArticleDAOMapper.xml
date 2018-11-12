@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.ArticleDAO">
+
+    <resultMap id="tt" type="Article">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="imgPath" column="imgPath"/>
+        <result property="content" column="content"/>
+        <result property="publishDate" column="publishDate"/>
+        <result property="a_id" column="a_id"/>
+        <association property="guru" javaType="Guru">
+            <id property="id" column="g_id"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+
+    <select id="queryByPage" resultMap="tt">
+       select a.id,a.title,a.imgPath,a.content,a.publishDate,a.a_id,
+        g.id as g_id,g.name
+        from article a join guru g on a.a_id=g.id
+        limit #{start},#{rows}
+    </select>
+
+    <select id="queryTotal" resultType="long">
+      select count(id) from article
+    </select>
+
+    <delete id="delete">
+        delete from article where id=#{id}
+    </delete>
+
+    <insert id="add">
+        insert into article values(#{id},#{title},#{imgPath},#{content},#{publishDate},#{a_id})
+    </insert>
+
+    <update id="update">
+        update article set title=#{title},imgPath=#{imgPath},content=#{content},a_id=#{a_id} where id=#{id}
+    </update>
+
+    <select id="queryById" resultType="Article">
+        select id,title,imgPath,content,publishDate,a_id from article where id=#{id}
+    </select>
+
+</mapper>

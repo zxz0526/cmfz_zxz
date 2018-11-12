@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.UserDAO">
+
+    <sql id="t1">
+        id,img,phoneNum,username,password,nickName,name,sex,addr,sign,stauts,createDate,salt
+    </sql>
+
+    <select id="queryById" resultType="User">
+        select <include refid="t1"/> from cmfz_user where username=#{username}
+    </select>
+    
+    <select id="login" resultType="User">
+        select <include refid="t1"/>
+        from cmfz_user where password=#{password}
+    </select>
+
+    <update id="update">
+        update cmfz_user set img=#{img},phoneNum=#{phoneNum},username=#{username},password=#{password},nickName=#{nickName},
+        name=#{name},sex=#{sex},addr=#{addr},sign=#{sign},stauts=#{stauts},createDate=#{createDate},salt=#{salt} where id=#{id}
+    </update>
+
+    <insert id="add">
+        insert into cmfz_user
+        values(#{id},#{img},#{phoneNum},#{username},#{password},#{nickName},#{name},#{sex},#{addr},#{sign},#{stauts},#{createDate},#{salt})
+    </insert>
+
+</mapper>

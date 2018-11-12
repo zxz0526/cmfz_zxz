@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.dao.AlbumDAO">
+    <resultMap id="tt" type="Album">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="publishDate" column="publishDate"/>
+        <result property="count" column="count"/>
+        <result property="coverImg" column="coverImg" />
+        <result property="star" column="star"/>
+        <result property="author" column="author"/>
+        <result property="broadCast" column="broadCast" />
+        <result property="brief" column="brief" />
+        <collection property="children" ofType="Chapter">
+            <id property="id" column="a_id"/>
+            <result property="title" column="c_title" />
+            <result property="fileSize" column="c_fileSize"/>
+            <result property="duration" column="c_duration"/>
+            <result property="downPath" column="c_downPath"/>
+            <result property="uploadTime" column="c_uploadTime" />
+            <result property="c_id" column="c_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryByPage" resultMap="tt">
+        select a.id,a.title,a.publishDate,a.count,a.coverImg,a.star,a.author,a.broadCast,a.brief,
+              c.id as a_id,c.title as c_title,c.fileSize as c_fileSize,c.duration as c_duration,
+              c.downPath as c_downPath,c.uploadTime as c_uploadTime,c.c_id
+         from album a left join chapter c on a.id=c.c_id limit #{start},#{rows}
+    </select>
+
+    <select id="queryTotal" resultType="long">
+        select count(id) from album
+    </select>
+
+    <delete id="delete">
+        delete from album where id=#{id}
+    </delete>
+
+    <insert id="add">
+        insert into album values(#{id},#{title},#{publishDate},#{count},#{coverImg},#{star},#{author},#{broadCast},#{brief})
+    </insert>
+
+    <select id="queryAll" resultType="Album">
+        select id,title,publishDate,count,coverImg,star,author,broadCast,brief from album
+    </select>
+</mapper>
