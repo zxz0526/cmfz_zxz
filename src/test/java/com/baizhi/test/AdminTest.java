@@ -24,5 +24,7 @@ public class AdminTest extends BaseTest {
         admin.setId("1");
         admin.setPassword("123123");
         adminService.motify(admin);
+
+
     }
 }
